@@ -1,0 +1,7 @@
+Some Python tools for analyzing codon/nucleutide/amino-acid usage in an organism.
+
+Takes GenBank files as input.
+
+Try "./usage_analyzer.py -h" to get started.
+
+
