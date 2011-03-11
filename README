@@ -1,7 +1,35 @@
-Some Python tools for analyzing codon/nucleutide/amino-acid usage in an organism.
+Some Python tools for analyzing codon/nucleutide/amino-acid usage in an organism. Currently only for E. coli.
+
+Requires BioPython.
 
 Takes GenBank files as input.
 
-Try "./usage_analyzer.py -h" to get started.
+For now includes two tools:
+
+  Usage Analyzer
+    Calculates nucleotide/codon/amino-acid usage from all coding sequences in an annotated genbank file.
+    Types of usage calculations currently supported:
+      amino acid usage
+      codon usage
+      codon usage per position
+      codon usage per amino acid
+      nucleotide usage per position
+
+    Planned calculations:
+      nucleotide usage
+      nucleotide usage per amino acid
+      nucleotide usage per amino acid per position
+      amino acid usage per position
+      codon usage per amino acid per position
+
+  Seq Generator: 
+
+Try "./usage_analyzer_cmd.py -h" to get started.
+
+Example usage:
+
+  ./usage_analyzer_cmd.py -f e_coli.gb -m amino_acid_usage -x both -o output.txt
+
+    Reads the annotated E. coli genome from e_coli.gb, calculates amino acid usage for all coding sequences, ignoring both stop codons and ambiguous codons, and outputs the results to the file output.txt.
 
 
