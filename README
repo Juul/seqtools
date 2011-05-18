@@ -1,5 +1,7 @@
 Some Python tools for analyzing codon/nucleutide/amino-acid usage in an organism. Currently only for E. coli.
 
+License is GPLv3.
+
 Requires BioPython.
 
 Takes GenBank files as input.
