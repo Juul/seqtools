@@ -2,6 +2,7 @@
 import sys, math, random, copy
 import time
 import getopt
+import json
 from UsageAnalyzer import *
 
 
@@ -29,7 +30,7 @@ def usage():
 if __name__ == "__main__":
 
 
-    optlist, args = getopt.getopt(sys.argv[1:], 'ahdf:o:m:x:')
+    optlist, args = getopt.getopt(sys.argv[1:], 'ahdf:o:m:x:c:')
 
     debug = False
     genbank_file = None
@@ -38,6 +39,7 @@ if __name__ == "__main__":
     get_absolute_values = False
     show_help = False
     exclude = None
+    cutoff = None
 
     for o, a in optlist:
         if o == '-d':
@@ -52,6 +54,8 @@ if __name__ == "__main__":
             get_absolute_values = True
         if o == '-x':
             exclude = a
+        if o == '-c':
+            cutoff = int(a)
         if o == '-h':
             show_help = True
 
@@ -60,7 +64,7 @@ if __name__ == "__main__":
 
     ua = UsageAnalyzer(genbank_file)
 
-    output = ua.get_usage_with_method(method, absolute_values=get_absolute_values, exclude=exclude)
+    output = ua.get_usage_with_method(method, absolute_values=get_absolute_values, exclude=exclude, cutoff=cutoff)
 
     if output == None:
         print "Unknown method"
@@ -70,7 +74,7 @@ if __name__ == "__main__":
         print str(output)
     else:
         f = open(output_file, 'w')
-        f.write(str(output))
+        f.write(json.dumps(output))
         f.close()
     exit(0)
 

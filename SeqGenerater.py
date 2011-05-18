@@ -4,6 +4,8 @@ from Bio.Data import CodonTable
 import random
 import sys, copy
 import constants
+import json
+
 
 from UsageAnalyzer import *
 
@@ -11,12 +13,14 @@ from UsageAnalyzer import *
 
 class SeqGenerator:
 
-    def get_usage_with_method(self, method, **kwargs):
+    def gen_seq_with_method(self, method, **kwargs):
 
         if method == 'amino_acid_seq_from_usage':
             return self.amino_acid_seq_from_usage(**kwargs)
         elif method == 'nucleotide_seq_from_codon_usage':
             return self.nucleotide_seq_from_codon_usage(**kwargs)
+        elif method == 'nucleotide_seq_from_codon_usage_per_position':
+            return self.nucleotide_seq_from_codon_usage_per_position(**kwargs)
         else:
             raise "Unknown method: " + method
 
@@ -26,8 +30,8 @@ class SeqGenerator:
         usage_file = kwargs.get('usage_file', None)
 
         if usage_file != None:
-            print "not implemented"
-            exit(-1)
+            usage = json.loads("\n".join(open(usage_file, 'r').readlines()))
+            return usage
         elif genbank_file != None:
             ua = UsageAnalyzer(genbank_file)
             return ua.get_usage_with_method(method, **kwargs)
@@ -75,7 +79,7 @@ class SeqGenerator:
 
         length = kwargs.get('length', None)
         if length == None:
-            raise "Cannot create amino acid sequence with unknown length"
+            raise "Cannot create nucleotide sequence with unknown length"
 
         length = length / 3
 
@@ -83,6 +87,27 @@ class SeqGenerator:
 
         for i in range(length):
             seq += self.biased_random_from_ratios(usage)
+
+        return seq
+
+
+    def nucleotide_seq_from_codon_usage_per_position(self, **kwargs):
+
+        kwargs['skip_start_codon'] = True
+        kwargs['exclude_stop'] = True
+        kwargs['exclude_ambiguous'] = True
+        usage = self.usage_from_genbank_or_usage_file('codon_usage_per_position', **kwargs)
+
+        length = kwargs.get('length', None)
+        if length == None:
+            raise "Cannot create nucleotide sequence with unknown length"
+
+        length = length / 3
+
+        seq = ''
+
+        for i in range(length):
+            seq += self.biased_random_from_ratios(usage[i])
 
         return seq
 

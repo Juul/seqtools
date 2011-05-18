@@ -218,20 +218,28 @@ class UsageAnalyzer:
 
     def calc_codon_usage_per_position(self, **kwargs):
 
-        absolute_values = kwargs.get('absolute_values', False) # return the actual number of occurences of each codon, instead of the ratios        
+        cutoff = kwargs.get('cutoff', None) # stop after "cutoff" number of codons
+        absolute_values = kwargs.get('absolute_values', False) # return the actual number of occurences of each codon, instead of the ratios 
         min_cdss = kwargs.get('min_cdss', 0) # if there are fewer CDSs for a position than this number, then ignore (this can happen if only a few CDSs are very long)
         cdss_for_position = [] # number of CDSs for each position
         codon_usage_for_position = []
         
         seqs = self.get_coding_sequences(**kwargs)
 
+        print "Cutoff: " + str(cutoff)
+
         i = 0
         while True:
+
+            if cutoff != None:
+                if i >= cutoff:
+                    break
+
             nuc_i = i * 3
             cdss_for_position.append(0)
             codon_usage_for_position.append({})
 
-            print "for position: " + str(i)
+            print "Calculating for position: " + str(i)
 
             c = 0
             for bseq in seqs:

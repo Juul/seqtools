@@ -17,8 +17,9 @@ def usage():
     print "  -h Print this help screen"
     print " --------------------------------"
     print " Methods (for use with the -m flag):"
-    print "   amino_acid_seq_from_usage: Generate an amino acid sequence based on the amino acid usage in the CDSs from the genbank file."
-    print "   nucleotide_seq_from_codon_usage: Generate a nucleotide sequence based on the codon usage in the CDSs from the genbank file."
+    print "   amino_acid_seq_from_usage: Generate an amino acid sequence based on the amino acid usage."
+    print "   nucleotide_seq_from_codon_usage: Generate a nucleotide sequence based on the codon usage."
+    print "   nucleotide_seq_from_codon_usage_per_position: Generate a nucleotide sequence based on the per-posision codon usage."
 
 
     exit(-1)
@@ -68,7 +69,7 @@ if __name__ == "__main__":
         'length': length
         }
 
-    output = sg.get_usage_with_method(method, **kwargs)
+    output = sg.gen_seq_with_method(method, **kwargs)
 
     if output_file == None:
         print str(output)
